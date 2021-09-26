@@ -5,15 +5,17 @@ import millify from 'millify';
 import { Col, Row, Typography, Select } from "antd";
 import { MoneyCollectOutlined, DollarCircleOutlined, FundOutlined, ExclamationCircleOutlined, StopOutlined, TrophyOutlined, CheckOutlined, NumberOutlined, ThunderboltOutlined } from '@ant-design/icons';
 
-import { useGetCryptoDetailsQuery } from "../services/cryptoApi";
+import { useGetCryptoDetailsQuery, useGetCryptoHistoryQuery } from "../services/cryptoApi";
+import LineChart from './LineChart';
 
 const { Title, Text } = Typography;
-const { Options } = Select;
+const { Option } = Select;
 
 export default function CryptoDetails() {
     const { coinId } = useParams();                     //useParams takes the Id in the url and allows you to use as a variable
-    const [timePeriod, setTimePeriod] = useState("7d");
+    const [timePeriod, setTimePeriod] = useState('7d');
     const { data, isFetching } = useGetCryptoDetailsQuery(coinId);
+    const { data: coinHistory } = useGetCryptoHistoryQuery({ coinId, timePeriod });
     const cryptoDetails = data?.data?.coin;
 
     if(isFetching) return "Loading...";
@@ -49,13 +51,15 @@ export default function CryptoDetails() {
                     View value statistics, market cap and supply.
                 </p>
             </Col>
-            <select defaultValue="7d" 
+            <Select defaultValue='7d'
                     className="select-timeperiod" 
                     placeholder="Select Time Period" 
                     onChange={(value) => setTimePeriod(value)}
             >
-                {time.map((date) => <option key={date}>{date}</option>)}
-            </select>
+                {time.map((date) => <Option key={date}>{date}</Option>)}
+            </Select>
+
+            <LineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails.price)} coinName={cryptoDetails.name}/>
             
             <Col className="stats-container">
                 <Col className="coin-value-statistics">

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Card, Row, Col, Input } from 'antd';
 
 import { useGetCryptosQuery } from '../services/cryptoApi';
+import Loader from './Loader';
 
 export default function Cryptocurrencies({ simplified }) {
     const count = simplified ? 10 : 100;                                     //fetches only 10 cards in home page
@@ -20,8 +21,8 @@ export default function Cryptocurrencies({ simplified }) {
 
     }, [cryptosList, searchTerm]);
     
-    if(isFetching) return "Loading...";
-    console.log(cryptosList);
+    if(isFetching) return <Loader />;
+    // console.log(cryptosList);
 
     return (
         <>

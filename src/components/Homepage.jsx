@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { useGetCryptosQuery } from '../services/cryptoApi';
 import { Cryptocurrencies, News } from '../components';
+import Loader from './Loader';
 
 const { Title } = Typography;                                //destructure title property from Typography object coming fom antd
 
@@ -12,7 +13,7 @@ export default function Homepage() {
     const { data, isFetching } = useGetCryptosQuery(10);
     const globalStats = data?.data?.stats
 
-    if(isFetching) return "Loading...";
+    if(isFetching) return <Loader />;
     console.log(globalStats);
     return (
         <>

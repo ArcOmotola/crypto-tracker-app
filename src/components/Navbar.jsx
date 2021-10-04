@@ -9,6 +9,7 @@ export default function Navbar() {
     const [activeMenu, setActiveMenu] = useState(true);
     const [screenSize, setScreenSize] = useState(null);
 
+
     useEffect(() => {
         const handleResize = () => setScreenSize(window.innerWidth);
 
@@ -19,13 +20,25 @@ export default function Navbar() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
+
+    
     useEffect(() => {
         if(screenSize < 768) {
-            setActiveMenu(false)
+            setActiveMenu(false);
         } else {
-            setActiveMenu(true)
+            setActiveMenu(true);
+            
         }
     }, [screenSize])
+
+    const handleNavClick = () => {
+            if(screenSize < 768) {
+                setActiveMenu(false);
+            } else {
+                setActiveMenu(true);
+                
+            }
+    }
 
 
     return (
@@ -41,16 +54,16 @@ export default function Navbar() {
             </div>
             {activeMenu && (
             <Menu theme="dark">
-                <Menu.Item icon={<HomeOutlined />} onClick={() => setActiveMenu(false)}>
+                <Menu.Item icon={<HomeOutlined />} onClick={handleNavClick}>
                     <Link to="/">Home</Link>
                 </Menu.Item>
-                <Menu.Item icon={<FundOutlined />} onClick={() => setActiveMenu(false)}>
+                <Menu.Item icon={<FundOutlined />} onClick={handleNavClick}>
                     <Link to="/cryptocurrencies">Cryptocurrencies</Link>
                 </Menu.Item>
-                <Menu.Item icon={<MoneyCollectOutlined />} onClick={() => setActiveMenu(false)}>
+                <Menu.Item icon={<MoneyCollectOutlined />} onClick={handleNavClick}>
                     <Link to="/exchanges">Exchanges</Link>
                 </Menu.Item>
-                <Menu.Item icon={<BulbOutlined />} onClick={() => setActiveMenu(false)}>
+                <Menu.Item icon={<BulbOutlined />} onClick={handleNavClick}>
                     <Link to="/news">News</Link>
                 </Menu.Item>
             </Menu>
